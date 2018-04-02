@@ -34,7 +34,7 @@ int main (){
 	reConst = 3.14159 * caudal / (4 * (viscosidad/densidad));
 	while (1){
 		printf("\tDiámetro: %Lg\n", fifthroot(a*f_i));
-		printf("\tReynold: %Le\n", reConst * fifthroot(a*f_i));
+		printf("\tReynolds: %Le\n", reConst * fifthroot(a*f_i));
 		printf("\tRugosidad relativa: %Le\n", rugosidad / fifthroot(a*f_i));
 		printf("¿f_i+1?: ");
 		scanf ("%Le", &f_i);
