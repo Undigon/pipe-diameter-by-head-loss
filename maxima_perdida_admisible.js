@@ -22,11 +22,11 @@ var seguir = true;
 
 a = 8 * caudal**2 * longitud / (headLoss * g * 9.8696);
 reConst = 3.14159 * caudal / (4 * (viscosidad))
-while (seguir == true){
+while (seguir){
 	document.write("<div>Diámetro"+ith+": "+Math.pow((a*f_i),(1/5))+" m</div>");
 	document.write("<div>Rugosidad relativa"+ith+": "+rugosidad/((a*f_i)**(1/5))+"</div>");
 	f_i = prompt("¿Nuevo coeficiente de fricción?");
-	if (f_i == null) {seguir = false;}
+	if (f_i == null || f_i == "") {seguir = false;}
 	ith++;
 }
 </script>
