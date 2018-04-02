@@ -38,6 +38,7 @@ int main (){
 		printf("\tRugosidad relativa: %Le\n", rugosidad / fifthroot(a*f_i));
 		printf("¿f_i+1?: ");
 		scanf ("%Le", &f_i);
+		if (f_i < 0.0) {return 0;}
 	}
 	return 0;
 }
