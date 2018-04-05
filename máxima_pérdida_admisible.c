@@ -9,7 +9,7 @@ long double densidad = 0.0;
 long double rugosidad = 0.0;
 long double a = 0.0;
 long double reConst= 0.0;
-long double f_i = 4e-2;
+long double f_i = 4e-1;
 const long double g = 9.81;
 
 long double inline fifthroot (long double radicando){
@@ -36,9 +36,23 @@ int main (){
 		printf("\tDiámetro: %Lg\n", fifthroot(a*f_i));
 		printf("\tReynolds: %Le\n", reConst * fifthroot(a*f_i));
 		printf("\tRugosidad relativa: %Le\n", rugosidad / fifthroot(a*f_i));
-		printf("¿f_i+1?: ");
-		scanf ("%Le", &f_i);
-		if (f_i < 0.0) {return 0;}
+		/*TO DO: Make a function out of this if, with recursion if it seems appropriate*/
+		if (reConst * fifthroot(a*f_i) < 2000) { /*Si es régimen laminar*/
+			if (f_i - 64 / (reConst * fifthroot(a*f_i)) < 0.0001) {
+				if (64 / (reConst * fifthroot(a*f_i)) - f_i < 0.0001) {
+					printf("Diámetro final: %Lg", fifthroot(a*f_i));
+					printf(" metros\n");
+					return 0;
+				}
+			}
+			f_i = 64 / (reConst * fifthroot(a*f_i));
+			printf("Se asignó f_i según régimen laminar\n");
+		}
+		else {/*Si no es régimen laminar*/
+			printf("¿f_i+1?: ");
+			scanf ("%Le", &f_i);
+		}
+		if (f_i <= 0.0) {return 0;}
 	}
 	return 0;
 }
