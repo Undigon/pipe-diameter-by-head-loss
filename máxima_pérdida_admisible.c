@@ -31,21 +31,21 @@ int main (){
 	scanf ("%Le", &densidad);
 	a = 8 * caudal * caudal * longitud / (headLoss * g * 9.8696);
 	printf("a = %Le\n", a);
-	reConst = 3.14159 * caudal / (4 * (viscosidad/densidad));
+	reConst = 4 * caudal / (3.14159 * (viscosidad/densidad));
 	while (1){
 		printf("\tDiámetro: %Lg\n", fifthroot(a*f_i));
-		printf("\tReynolds: %Le\n", reConst * fifthroot(a*f_i));
+		printf("\tReynolds: %Le\n", reConst / fifthroot(a*f_i));
 		printf("\tRugosidad relativa: %Le\n", rugosidad / fifthroot(a*f_i));
 		/*TO DO: Make a function out of this if, with recursion if it seems appropriate*/
-		if (reConst * fifthroot(a*f_i) < 2000) { /*Si es régimen laminar*/
-			if (f_i - 64 / (reConst * fifthroot(a*f_i)) < 0.0001) {
-				if (64 / (reConst * fifthroot(a*f_i)) - f_i < 0.0001) {
+		if (reConst / fifthroot(a*f_i) < 2000) { /*Si es régimen laminar*/
+			if (f_i - 64 / (reConst / fifthroot(a*f_i)) < 0.0001) {
+				if (64 / (reConst / fifthroot(a*f_i)) - f_i < 0.0001) {
 					printf("Diámetro final: %Lg", fifthroot(a*f_i));
 					printf(" metros\n");
 					return 0;
 				}
 			}
-			f_i = 64 / (reConst * fifthroot(a*f_i));
+			f_i = 64 / (reConst / fifthroot(a*f_i));
 			printf("Se asignó f_i según régimen laminar\n");
 		}
 		else {/*Si no es régimen laminar*/
