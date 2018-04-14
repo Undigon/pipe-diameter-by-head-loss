@@ -17,17 +17,17 @@ var a = 0.0;
 var reConst = 0.0;
 var f_i = 0.04;
 var g = 9.81;
-var ith = 1;
+var ith = 0;
 var seguir = true;
 
 a = 8 * caudal**2 * longitud / (headLoss * g * Math.pow(Math.PI, 2));
 reConst = 4 * caudal / (Math.PI * (viscosidad/densidad));
 while (seguir){
-	document.write("<p><div>Diámetro"+ith+": "+Math.pow((a*f_i),(1/5))+" m</div>");
+	ith++;
+        document.write("<p><div>Diámetro"+ith+": "+Math.pow((a*f_i),(1/5))+" m</div>");
 	document.write("<div>Rugosidad relativa"+ith+": "+rugosidad/((a*f_i)**(1/5))+"</div>");
 	document.write("<div>Reynolds"+ith+": "+reConst/Math.pow(a*f_i,1/5)+"</div></p>");
 	f_i = prompt("¿Nuevo coeficiente de fricción?");
 	if (f_i == null || f_i == "") {seguir = false;}
-	ith++;
 }
 </script>
