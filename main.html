@@ -1,34 +1,74 @@
 <!DOCTYPE html>
 <html lang="es">
-<meta charset="utf-8" />
 <head>
+   <meta charset="utf-8">
+   <meta name="author" content="Rodrigo Iván Avila Demitroff">
+   <!--<meta name="viewport" content="width=device-width, initial-scale=1.0">-->
+   <title>
+   Operaciones Unitarias I
+   </title>
    <style>
-     body {
+        /*#wob {
         color: white;
         background-color: black;
-        }
+        }*/
+	body {
+	color: black;
+	background-color: eggshell;	
+	}
+	/*#tablebow{
+		border: 1px solid black;
+		border-collapse: collapse;	
+	}
+	#tablewob{
+		border: 1px solid white;
+		border-collapse: collapse;	
+	}
+	th{
+		border: 1px solid black;
+		border-collapse: collapse;
+	}*/
+	footer{
+		position: fixed;
+		bottom: 10px;
+	}
+	input{
+		padding:5px;
+	}
    </style>
 </head>
 <body>
-    <h2>Creado por Rodrigo Iván Avila Demitroff. 2018.</h2>
+    <h2>Diámetro mínimo según pérdida máxima</h2>
+	<!--<form>
+	<input type="radio" name="contraste" value="true" checked onclick="contrast(true)">Alto contraste<br>
+	<input type="radio" name="contraste" values="false" onclick="contrast(false)">Normal<br>
+	</form>-->
 
     <p>Este documento contiene un pequeño programa en JavaScript.<br>
     Acepta notación científica. Ejemplo 2.3e-2 = 0.023</p>
-  <p>Cancelar cuando pide el nuevo coeficiente de fricción cierra la caja de diálogo.</p>
 
-    <h3>Datos</h3>
-  <p>Caudal[m³/s]:<input type="number" id="caudal" value="1e-1"></p>
-  <p>Longitud[m]:<input type="number" id="longitud" value="1"></p>
-  <p>Pérdida máxima de cabeza[m]:<input type="number" id="headLoss" value="1"></p>
-  <p>Viscosidad dinámica[kg/m·s]:<input type="number" id="visc" value="1.0e-5"></p>
-  <p>Densidad[kg/m³]:<input type="number" id="densidad" value="998">
-  <p>Rugosidad absoluta[m]:<input type="number" id="rugosidad" value="1e-5"></p>
+ <fieldset <!--style="width:45%"-->
+  <legend><strong>Datos</strong></legend>
+  <table>
+  <tr><td>Caudal [m³/s]</td><td><input type="number" id="caudal" autofocus></td></tr>
+  <tr><td>Longitud [m]</td><td><input type="number" id="longitud" placeholder="L+Leq"></td></tr>
+  <tr><td>Pérdida máxima de cabeza [m]</td><td><input type="number" id="headLoss"></td></tr>
+  <tr><td>Viscosidad dinámica [kg/m·s]</td><td><input type="number" id="visc"></td></tr>
+  <tr><td>Densidad [kg/m³]</td><td><input type="number" id="densidad" value="998"></td></tr>
+  <tr><td>Rugosidad absoluta [m]</td><td><input type="number" id="rugosidad"></td></tr>
+  </table>
+ </fieldset>
+  <button onclick="pipes()" id="submit">Submit</button><span class= "toErase" id="appear"></span>
 
-  <button onclick="pipes()">Submit</button>
+  <p><div>Diámetro<span class="toErase ith"></span>: <span class= "toErase" id="diametroRes"></span>&nbsp m</div>
+  <div>Reynolds<span class="toErase ith"></span>: <span class= "toErase" id="reyRes"></span></div>
+  <div>Rugosidad relativa<span class="toErase ith"></span>: <span class= "toErase" id="rugRelRes"></span></div></p>
 
-  <p><div>Diámetro<span id="ith0"></span>: <span id="diametroRes"></span>m</div>
-  <div>Reynolds<span id="ith1"></span>: <span id="reyRes"></span></div>
-  <div>Rugosidad relativa<span id="ith2"></span>: <span id="rugRelRes"></span></div></p>
+  <button onclick="clean()" style="background-color:red"><strong>Clean</strong></button>
+  <footer>
+	<small>&copy; 2018 Rodrigo Iván Avila Demitroff.</small>
+  <footer>
+
 <script>
 /*MIT License
 
@@ -52,6 +92,10 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
+var beenHere = 0;
+var f_i = 0.04;
+var ith = 0;
+
 function pipes(){
 	var caudal = document.getElementById("caudal").value;
 	var longitud = document.getElementById("longitud").value;
@@ -61,24 +105,28 @@ function pipes(){
 	var rugosidad = document.getElementById("rugosidad").value;
 	var a = 0.0;
 	var reConst = 0.0;
-	var f_i = 0.04;
 	var g = 9.81;
-	var ith = 0;
-	var seguir = true;
 
 	a = 8 * caudal**2 * longitud / (headLoss * g * Math.pow(Math.PI, 2));
 	reConst = 4 * caudal / (Math.PI * (viscosidad/densidad));
-	while (seguir){
-		document.getElementById("ith0").innerHTML = ith;
-		document.getElementById("ith1").innerHTML = ith;
-		document.getElementById("ith2").innerHTML = ith;
-		ith++;
-		document.getElementById("diametroRes").innerHTML = Math.pow((a*f_i),(1/5));
-		document.getElementById("rugRelRes").innerHTML = rugosidad/((a*f_i)**(1/5));
-		document.getElementById("reyRes").innerHTML = reConst/Math.pow(a*f_i,1/5);
-		f_i = prompt("¿Nuevo coeficiente de fricción?");
-		if (f_i == null || f_i == "") {seguir = false;}
-	}
+	if (0 == beenHere) {document.getElementById("appear").innerHTML = "<input type='number' id='endgame'>";}
+    else {f_i = document.getElementById("endgame").value;}
+    beenHere = 1;
+	var x = document.getElementsByClassName("ith");
+	for (var i = 0; i<x.length; i++) {x[i].innerHTML = ith;}
+	ith++;
+	document.getElementById("diametroRes").innerHTML = Math.pow((a*f_i),(1/5));
+	document.getElementById("rugRelRes").innerHTML = rugosidad/((a*f_i)**(1/5));
+	document.getElementById("reyRes").innerHTML = reConst/Math.pow(a*f_i,1/5);
+}
+
+function clean(){
+	document.getElementById("appear").innerHTML = "";
+	beenHere = 0;
+	f_i = 0.04;
+	ith = 0;
+	var x= document.getElementsByClassName("toErase");
+	for (var i = 0; i < x.length; i++) {x[i].innerHTML= ""}
 }
 </script>
 </body>
